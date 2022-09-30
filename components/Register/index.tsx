@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './index.module.css';
 import {  Input, FormControl, FormHelperText, FormLabel, FormErrorMessage } from '@chakra-ui/react';
-import Button from '../inputs/Button'
+import Button from '../inputs/Button';
+
 function Register() {
   return (
 <div>
