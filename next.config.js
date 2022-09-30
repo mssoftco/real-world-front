@@ -3,8 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   distDir: 'build',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/arvan-cloud-front/' : '',
-  images: { unoptimized: true }
+  images: { unoptimized: true },
+  ...{ ...(process.env.NODE_ENV === 'production' ? { assetPrefix: '/arvan-cloud-front/' } : {}) }
 };
 
 module.exports = nextConfig;
