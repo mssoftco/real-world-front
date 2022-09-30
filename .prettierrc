@@ -1,15 +1,10 @@
-{
-  "printWidth": 150,
-  "editor.formatOnSave": true,
-  "tabWidth": 2,
-  "requireConfig": false,
-  "useTabs": false,
-  "trailingComma": "none",
-  "bracketSpacing": true,
-  "jsxBracketSameLine": false,
-  "semi": true,
-  "singleQuote": true,
-  "jsxSingleQuote": true,
-  "html.format.wrapLineLength": 80,
-  "html.format.wrapAttributes": "force-expand-multiline"
-}
+printWidth: 150
+tabWidth: 2
+useTabs: false
+semi: true
+singleQuote: true
+jsxSingleQuote: true
+trailingComma: 'none'
+bracketSpacing: true
+bracketSameLine: false
+arrowParens: 'avoid'
