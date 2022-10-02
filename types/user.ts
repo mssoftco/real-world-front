@@ -17,11 +17,4 @@ type UserForLogin = {
   };
 };
 
-type UserForState = {
-  user: {
-    username: string;
-    token: string;
-  };
-};
-
-export type { User, UserForLogin, UserForRegister, UserForState };
+export type { User, UserForLogin, UserForRegister };
