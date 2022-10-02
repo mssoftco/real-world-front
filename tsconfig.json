@@ -22,6 +22,7 @@
       "@/constants/*": ["constants/*"],
       "@/atoms/*": ["atoms/*"],
       "@/hooks/*": ["hooks/*"],
+      "@/styles/*": ["styles/*"],
       "@/utils/*": ["utils/*"]
     },
     "allowSyntheticDefaultImports": true

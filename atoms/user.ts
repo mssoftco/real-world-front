@@ -1,6 +1,4 @@
 import { atomWithStorage } from 'jotai/utils';
-import { UserForState } from '@/types/user';
-import { USER_STORAGE_KEY } from '@/constants/defaults';
+import { TOKEN_STORAGE_KEY } from '@/constants/defaults';
 
-//const initialState: UserForState = { username: '', token: '' };
-//export const userAtom = atomWithStorage<UserForState>(USER_STORAGE_KEY, initialState);
+export const tokenAtom = atomWithStorage<string>(TOKEN_STORAGE_KEY, '');

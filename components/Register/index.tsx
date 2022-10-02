@@ -7,6 +7,10 @@ import { UserForRegister } from '@/types/user';
 import InputForm from '@/components/inputs/InputForm';
 import Link from 'next/link';
 import { ToastStatusType } from '@/types/tools';
+import { routes } from '@/constants/defaults';
+import { useAtom } from 'jotai';
+import { tokenAtom } from '@/atoms/user';
+import Router from 'next/router';
 
 const defaultValues: UserForRegister = {
   user: {
@@ -17,6 +21,7 @@ const defaultValues: UserForRegister = {
 };
 
 function Register() {
+  const [, setToken] = useAtom(tokenAtom);
   const [errorsResponse, setErrorsResponse] = useState<{ username?: string[]; email?: string[]; password?: string[] }>({});
   const { register, handleSubmit, reset , formState: { errors } } = useForm<UserForRegister>({ defaultValues }); // prettier-ignore
 
@@ -28,10 +33,13 @@ function Register() {
   const newUser = useCreateUser();
   const onSubmit: SubmitHandler<UserForRegister> = data =>
     newUser.mutate(data, {
-      onSuccess: () => {
+      onSuccess: response => {
         reset();
         setErrorsResponse({});
-        toasty(['Create User', 'User successfully added', 'success']);
+        setToken(response?.user?.token);
+        Router.push(routes.HOME).then(() => {
+          toasty(['Create User', 'User successfully added', 'success']);
+        });
       },
       onError: (error: any) => {
         setErrorsResponse(error);
@@ -77,7 +85,7 @@ function Register() {
           <Text display={'inline-block'} pr={1}>
             Already Registered?
           </Text>
-          <Link href={'/login'}>
+          <Link href={routes.LOGIN}>
             <a style={{ fontWeight: '600' }}>Login</a>
           </Link>
         </div>
