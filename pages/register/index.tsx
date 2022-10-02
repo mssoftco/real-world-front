@@ -1,6 +1,6 @@
 import React from 'react';
-import Register from '@/components/Register';
 import Head from 'next/head';
+import Register from '@/components/Register';
 import Layout from '@/components/layouts/Public';
 
 function RegisterPage() {
