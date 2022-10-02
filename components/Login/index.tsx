@@ -1,41 +1,44 @@
 import React, { useState } from 'react';
 import { Box, Heading, Text, useToast } from '@chakra-ui/react';
 import Button from '@/components/inputs/Button';
-import { useCreateUser } from '@/hooks/useCreateUser';
+import { useLoginUser } from '@/hooks/useLoginUser';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { UserForRegister } from '@/types/user';
+import { UserForLogin } from '@/types/user';
 import InputForm from '@/components/inputs/InputForm';
 import Link from 'next/link';
 import { ToastStatusType } from '@/types/tools';
 
-const defaultValues: UserForRegister = {
+const defaultValues: UserForLogin = {
   user: {
-    username: '',
-    password: '',
-    email: ''
+    email: '',
+    password: ''
   }
 };
 
-function Register() {
-  const [errorsResponse, setErrorsResponse] = useState<{ username?: string[]; email?: string[]; password?: string[] }>({});
-  const { register, handleSubmit, reset , formState: { errors } } = useForm<UserForRegister>({ defaultValues }); // prettier-ignore
+function Login() {
+  const [errorsResponse, setErrorsResponse] = useState<{ email?: string[]; password?: string[] }>({});
+  const { register, handleSubmit, reset , formState: { errors } } = useForm<UserForLogin>({ defaultValues }); // prettier-ignore
 
   const toast = useToast();
   const toasty = ([title, description, status]: [string, string, ToastStatusType]) => {
     toast({ title, description, status, duration: 6000, isClosable: true });
   };
 
-  const newUser = useCreateUser();
-  const onSubmit: SubmitHandler<UserForRegister> = data =>
-    newUser.mutate(data, {
+  const loginUser = useLoginUser();
+  const onSubmit: SubmitHandler<UserForLogin> = data =>
+    loginUser.mutate(data, {
       onSuccess: () => {
         reset();
         setErrorsResponse({});
-        toasty(['Create User', 'User successfully added', 'success']);
+        toasty(['Login User', 'User successfully Login', 'success']);
       },
       onError: (error: any) => {
-        setErrorsResponse(error);
-        toasty(['Error Create User', '', 'error']);
+        const errorDescription = Object?.entries(error).join(' ');
+        let newError = {};
+        if (errorDescription.includes('email')) newError = { ...newError, email: ['is invalid'] };
+        if (errorDescription.includes('password')) newError = { ...newError, password: ['is invalid'] };
+        setErrorsResponse(newError);
+        toasty(['Error Login User', errorDescription, 'error']);
       }
     });
 
@@ -43,16 +46,8 @@ function Register() {
     <Box borderRadius={5} bg={'gray.100'} p={6} w={'100%'} maxW={450}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Heading color={'gray'} textAlign={'center'}>
-          Register
+          Login
         </Heading>
-        <InputForm
-          name='username'
-          label='User'
-          type='text'
-          isErrorForm={!!errors.user?.username}
-          errorsResponse={errorsResponse['username']}
-          {...{ register }}
-        />
         <InputForm
           name='email'
           label='Email'
@@ -71,14 +66,14 @@ function Register() {
           {...{ register }}
         />
         <Button w={'100%'} mb={2} type='submit'>
-          Register
+          Login
         </Button>
         <div>
           <Text display={'inline-block'} pr={1}>
-            Already Registered?
+            Don’t have account?
           </Text>
-          <Link href={'/login'}>
-            <a style={{ fontWeight: '600' }}>Login</a>
+          <Link href={'/register'}>
+            <a style={{ fontWeight: '600' }}>Register Now</a>
           </Link>
         </div>
       </form>
@@ -86,4 +81,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default Login;

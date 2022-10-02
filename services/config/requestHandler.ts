@@ -15,8 +15,12 @@ export const onError = async (error: any) => {
   switch (error.response?.status) {
     case 401:
     case 403:
-      dataStorage.saveDataToStorage(REDIRECT_STORAGE_KEY, window?.location?.pathname, 'session');
-      window?.location?.replace('/login');
+      if (window?.location?.pathname !== '/login') {
+        dataStorage.saveDataToStorage(REDIRECT_STORAGE_KEY, window?.location?.pathname, 'session');
+        window?.location?.replace('/login');
+      } else {
+        return Promise.reject(error.response?.data?.errors);
+      }
       break;
     case 502:
       throw new Error(`${error.response?.status} - ${error.response?.data.errors}`);
