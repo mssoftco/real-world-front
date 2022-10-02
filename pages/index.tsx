@@ -1,10 +1,18 @@
-import type { NextPage } from 'next';
-import Register from '../components/Register';
+import React from 'react';
+import Head from 'next/head';
+import Layout from '@/components/layouts/Dashboard';
 
-const Home: NextPage = () => {
+const HomePage = () => {
   return (
-    <Register/>
+    <>
+      <Head>
+        <title>Arvan Cloud | Dashboard</title>
+      </Head>
+      <div>home</div>
+    </>
   );
 };
 
-export default Home;
+HomePage.Layout = Layout;
+
+export default HomePage;

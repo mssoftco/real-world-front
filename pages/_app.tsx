@@ -1,22 +1,35 @@
-import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ChakraProvider } from '@chakra-ui/react';
+import { Provider as StateProvider } from 'jotai';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { getLayout } from '@/utils/layout';
+import '../styles/globals.css';
 
-function MyApp({ Component, pageProps }: AppProps) {
+const queryClient = new QueryClient();
+
+function ArvanApp({ Component, pageProps }: AppProps) {
+  const Layout = getLayout<any>(Component);
+
   return (
     <>
       <Head>
-        <meta charSet="utf-8"/>
+        <meta charSet='utf-8' />
         <title>Arvan Cloud - Dashboard</title>
         <meta name='description' content='frycto' />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no' />
       </Head>
-      <ChakraProvider>
-      <Component {...pageProps} />
-      </ChakraProvider>
+      <StateProvider>
+        <QueryClientProvider client={queryClient}>
+          <ChakraProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ChakraProvider>
+        </QueryClientProvider>
+      </StateProvider>
     </>
   );
 }
 
-export default MyApp;
+export default ArvanApp;
