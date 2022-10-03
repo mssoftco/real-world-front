@@ -42,14 +42,10 @@ function Header() {
             ) : (
               <>
                 <Link href={routes.LOGIN}>
-                  <Button as={'a'} cursor={'pointer'} colorScheme={'whatsapp'} variant={'outline'}>
-                    Login
-                  </Button>
+                  <a>Login</a>
                 </Link>
                 <Link href={routes.REGISTER}>
-                  <Button as={'a'} cursor={'pointer'} colorScheme={'twitter'} variant={'outline'}>
-                    Register
-                  </Button>
+                  <a>Register</a>
                 </Link>
               </>
             )}

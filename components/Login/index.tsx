@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Heading, Text, useToast } from '@chakra-ui/react';
 import Button from '@/components/inputs/Button';
-import { useLoginUser } from '@/hooks/useLoginUser';
+import { useLoginUser } from '@/hooks/users';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { UserForLogin, UserLoginResponsiveErrors } from '@/types/user';
 import InputForm from '@/components/inputs/InputForm';
@@ -29,7 +29,7 @@ function Login() {
         Router.push(routes.HOME).then(() => toast({ title: 'User Logged in', description: 'User successfully Logged in' }));
       },
       onError: (error: any) => {
-        let errors: UserLoginResponsiveErrors = { ...error };
+        const errors: UserLoginResponsiveErrors = { ...error };
         let errorDescription = '';
         if (error.hasOwnProperty('email or password')) {
           const errorKey = Object.keys(errors);

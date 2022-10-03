@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Heading, Text, useToast } from '@chakra-ui/react';
 import Button from '@/components/inputs/Button';
-import { useCreateUser } from '@/hooks/useCreateUser';
+import { useCreateUser } from '@/hooks/users';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { UserForRegister, UserRegisterResponsiveErrors } from '@/types/user';
 import InputForm from '@/components/inputs/InputForm';
