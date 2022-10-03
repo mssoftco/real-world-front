@@ -78,7 +78,7 @@ function Register() {
           errorsResponse={errorsResponse['password']}
           {...{ register }}
         />
-        <Button w={'100%'} mb={2} type='submit'>
+        <Button isLoading={newUser.isLoading} loadingText={'Registering'} w={'100%'} mb={2} type='submit'>
           Register
         </Button>
         <div>
