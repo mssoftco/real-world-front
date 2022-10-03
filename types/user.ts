@@ -17,4 +17,16 @@ type UserForLogin = {
   };
 };
 
-export type { User, UserForLogin, UserForRegister };
+type UserRegisterResponsiveErrors = {
+  username?: [string];
+  email?: [string];
+  password?: [string];
+};
+
+type UserLoginResponsiveErrors = {
+  'email or password'?: [string];
+  email?: [string];
+  password?: [string];
+};
+
+export type { User, UserForLogin, UserForRegister, UserRegisterResponsiveErrors, UserLoginResponsiveErrors };

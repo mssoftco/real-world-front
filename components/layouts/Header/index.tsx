@@ -6,20 +6,16 @@ import { useToken } from '@/hooks/useToken';
 import Loading from '@/components/Loading';
 import Button from '@/components/inputs/Button';
 import Router from 'next/router';
-import { ToastStatusType } from '@/types/tools';
 
 function Header() {
   const { isLoading, isLogin, username, setToken } = useToken();
-  const toast = useToast();
-  const toasty = ([title, description, status]: [string, string, ToastStatusType]) => {
-    toast({ title, description, status, duration: 6000, isClosable: true });
-  };
+  const toast = useToast({ status: 'success', duration: 6000, isClosable: true });
+
   const logout = () => {
     setToken('');
-    Router.push(routes.HOME).then(() => {
-      toasty(['Logout User', 'User successfully Logout', 'info']);
-    });
+    Router.push(routes.HOME).then(() => toast({ title: 'Logout User', description: 'User successfully Logout', status: 'info' }));
   };
+
   if (isLoading) return <Loading />;
 
   return (
@@ -40,14 +36,20 @@ function Header() {
         <Flex as={'nav'}>
           <Flex as={'ul'} gap={5}>
             {isLogin ? (
-              <Button onClick={logout}>Logout</Button>
+              <Button as={'a'} cursor={'pointer'} colorScheme={'cyan'} variant={'outline'} onClick={logout}>
+                Logout
+              </Button>
             ) : (
               <>
                 <Link href={routes.LOGIN}>
-                  <a>login</a>
+                  <Button as={'a'} cursor={'pointer'} colorScheme={'whatsapp'} variant={'outline'}>
+                    Login
+                  </Button>
                 </Link>
                 <Link href={routes.REGISTER}>
-                  <a>register</a>
+                  <Button as={'a'} cursor={'pointer'} colorScheme={'twitter'} variant={'outline'}>
+                    Register
+                  </Button>
                 </Link>
               </>
             )}
