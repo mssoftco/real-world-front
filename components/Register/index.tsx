@@ -3,32 +3,21 @@ import { Box, Heading, Text, useToast } from '@chakra-ui/react';
 import Button from '@/components/inputs/Button';
 import { useCreateUser } from '@/hooks/useCreateUser';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { UserForRegister } from '@/types/user';
+import { UserForRegister, UserRegisterResponsiveErrors } from '@/types/user';
 import InputForm from '@/components/inputs/InputForm';
 import Link from 'next/link';
-import { ToastStatusType } from '@/types/tools';
 import { routes } from '@/constants/defaults';
 import { useAtom } from 'jotai';
 import { tokenAtom } from '@/atoms/user';
 import Router from 'next/router';
-
-const defaultValues: UserForRegister = {
-  user: {
-    username: '',
-    password: '',
-    email: ''
-  }
-};
+import { userForRegisterDefaultValues as defaultValues } from '@/constants/reactHookFormDefaultData';
 
 function Register() {
   const [, setToken] = useAtom(tokenAtom);
-  const [errorsResponse, setErrorsResponse] = useState<{ username?: string[]; email?: string[]; password?: string[] }>({});
-  const { register, handleSubmit, reset , formState: { errors } } = useForm<UserForRegister>({ defaultValues }); // prettier-ignore
+  const toast = useToast({ status: 'success', duration: 6000, isClosable: true });
 
-  const toast = useToast();
-  const toasty = ([title, description, status]: [string, string, ToastStatusType]) => {
-    toast({ title, description, status, duration: 6000, isClosable: true });
-  };
+  const [errorsResponse, setErrorsResponse] = useState<UserRegisterResponsiveErrors>({});
+  const { register, handleSubmit, reset , formState: { errors } } = useForm<UserForRegister>({ defaultValues }); // prettier-ignore
 
   const newUser = useCreateUser();
   const onSubmit: SubmitHandler<UserForRegister> = data =>
@@ -38,12 +27,12 @@ function Register() {
         setErrorsResponse({});
         setToken(response?.user?.token);
         Router.push(routes.HOME).then(() => {
-          toasty(['Create User', 'User successfully added', 'success']);
+          toast({ title: 'Create User', description: 'User successfully added' });
         });
       },
       onError: (error: any) => {
         setErrorsResponse(error);
-        toasty(['Error Create User', '', 'error']);
+        toast({ title: 'Create User Error', description: '', status: 'error' });
       }
     });
 

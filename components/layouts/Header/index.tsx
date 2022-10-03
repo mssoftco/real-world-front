@@ -6,20 +6,16 @@ import { useToken } from '@/hooks/useToken';
 import Loading from '@/components/Loading';
 import Button from '@/components/inputs/Button';
 import Router from 'next/router';
-import { ToastStatusType } from '@/types/tools';
 
 function Header() {
   const { isLoading, isLogin, username, setToken } = useToken();
-  const toast = useToast();
-  const toasty = ([title, description, status]: [string, string, ToastStatusType]) => {
-    toast({ title, description, status, duration: 6000, isClosable: true });
-  };
+  const toast = useToast({ status: 'success', duration: 6000, isClosable: true });
+
   const logout = () => {
     setToken('');
-    Router.push(routes.HOME).then(() => {
-      toasty(['Logout User', 'User successfully Logout', 'info']);
-    });
+    Router.push(routes.HOME).then(() => toast({ title: 'Logout User', description: 'User successfully Logout', status: 'info' }));
   };
+
   if (isLoading) return <Loading />;
 
   return (

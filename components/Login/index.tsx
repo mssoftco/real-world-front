@@ -3,32 +3,21 @@ import { Box, Heading, Text, useToast } from '@chakra-ui/react';
 import Button from '@/components/inputs/Button';
 import { useLoginUser } from '@/hooks/useLoginUser';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { UserForLogin } from '@/types/user';
+import { UserForLogin, UserLoginResponsiveErrors } from '@/types/user';
 import InputForm from '@/components/inputs/InputForm';
 import Link from 'next/link';
-import { ToastStatusType } from '@/types/tools';
 import { routes } from '@/constants/defaults';
 import { useAtom } from 'jotai';
 import { tokenAtom } from '@/atoms/user';
 import Router from 'next/router';
-
-const defaultValues: UserForLogin = {
-  user: {
-    email: '',
-    password: ''
-  }
-};
+import { userForLoginDefaultValues as defaultValues } from '@/constants/reactHookFormDefaultData';
 
 function Login() {
   const [, setToken] = useAtom(tokenAtom);
+  const toast = useToast({ status: 'success', duration: 6000, isClosable: true });
 
-  const [errorsResponse, setErrorsResponse] = useState<{ email?: string[]; password?: string[] }>({});
+  const [errorsResponse, setErrorsResponse] = useState<UserLoginResponsiveErrors>({});
   const { register, handleSubmit, reset , formState: { errors } } = useForm<UserForLogin>({ defaultValues }); // prettier-ignore
-
-  const toast = useToast();
-  const toasty = ([title, description, status]: [string, string, ToastStatusType]) => {
-    toast({ title, description, status, duration: 6000, isClosable: true });
-  };
 
   const loginUser = useLoginUser();
   const onSubmit: SubmitHandler<UserForLogin> = data =>
@@ -37,17 +26,21 @@ function Login() {
         reset();
         setErrorsResponse({});
         setToken(response?.user?.token);
-        Router.push(routes.HOME).then(() => {
-          toasty(['Login User', 'User successfully Login', 'success']);
-        });
+        Router.push(routes.HOME).then(() => toast({ title: 'User Logged in', description: 'User successfully Logged in' }));
       },
       onError: (error: any) => {
-        const errorDescription = Object?.entries(error).join(' ');
-        let newError = {};
-        if (errorDescription.includes('email')) newError = { ...newError, email: ['is invalid'] };
-        if (errorDescription.includes('password')) newError = { ...newError, password: ['is invalid'] };
-        setErrorsResponse(newError);
-        toasty(['Error Login User', errorDescription, 'error']);
+        let errors: UserLoginResponsiveErrors = { ...error };
+        let errorDescription = '';
+        if (error.hasOwnProperty('email or password')) {
+          const errorKey = Object.keys(errors);
+          const errorValue = errors['email or password'] || [''];
+          errorDescription = `${errorKey.join()} ${errorValue.join()}`;
+          delete errors['email or password'];
+          errors.email = errorValue;
+          errors.password = errorValue;
+        }
+        setErrorsResponse(errors);
+        toast({ title: 'Login Error', description: [errorDescription], status: 'error' });
       }
     });
 
