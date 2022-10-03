@@ -74,7 +74,7 @@ function Login() {
           errorsResponse={errorsResponse['password']}
           {...{ register }}
         />
-        <Button w={'100%'} mb={2} type='submit'>
+        <Button isLoading={loginUser.isLoading} loadingText='Logging in' w={'100%'} mb={2} type='submit'>
           Login
         </Button>
         <div>
