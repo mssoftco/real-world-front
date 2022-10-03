@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { routes } from '@/constants/defaults';
-import { Box, Flex, Heading, Text, useToast } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, useMediaQuery, useToast } from '@chakra-ui/react';
 import { useToken } from '@/hooks/useToken';
 import Loading from '@/components/Loading';
 import Button from '@/components/inputs/Button';
@@ -9,6 +9,7 @@ import Router from 'next/router';
 
 function Header() {
   const { isLoading, isLogin, username, setToken } = useToken();
+  const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
   const toast = useToast({ status: 'success', duration: 6000, isClosable: true });
 
   const logout = () => {
@@ -16,7 +17,7 @@ function Header() {
     Router.push(routes.HOME).then(() => toast({ title: 'Logout User', description: 'User successfully Logout', status: 'info' }));
   };
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loading thickness={'2px'} size={'md'} />;
 
   return (
     <Box as={'header'} bg={'gray.700'} color={'white'} h={'100%'} px={5} fontWeight={500}>
@@ -25,7 +26,7 @@ function Header() {
           <Link href={routes.HOME}>
             <a>
               <Heading as={'h1'} fontSize={24}>
-                Arvan Challenge
+                {isLargerThan800 ? 'Arvan Challenge' : 'A'}
               </Heading>
             </a>
           </Link>
