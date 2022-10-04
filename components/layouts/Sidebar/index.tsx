@@ -17,7 +17,7 @@ function Sidebar() {
             <Text className={styles.title}>{title}</Text>
             <ul className={styles.list}>
               {navList.map(({ label, href }) => (
-                <li key={label} className={`${styles.listItem} ${routerPath?.includes(href) && styles.listItemActive}`}>
+                <li key={label} className={`${styles.listItem} ${href === routerPath && styles.listItemActive}`}>
                   <Link href={href}>
                     <a>{label}</a>
                   </Link>

@@ -1,24 +1,21 @@
 import React from 'react';
-import { FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import { FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react';
+import styles from '@/components/inputs/InputForm/index.module.css';
 
 type InputFormType = {
-  name: string;
   label: string;
-  type: string;
-  pattern?: RegExp;
   isErrorForm: boolean;
   errorsResponse: string[] | undefined;
-  register: any;
+  children: React.ReactElement;
 };
-function InputForm({ name, label, type, isErrorForm, errorsResponse, register, pattern }: InputFormType) {
+function InputForm({ label, isErrorForm, errorsResponse, children }: InputFormType) {
   const isErrorResponse = !!errorsResponse;
-  const inputProps = { ...register(`user.${name}`, { required: true, pattern }) };
   const errorMessage = isErrorResponse ? errorsResponse?.join('\n') : `${label} is required.`;
   return (
     <>
-      <FormControl m={'10px 0 20px'} isInvalid={isErrorForm || isErrorResponse}>
+      <FormControl className={styles.formControl} isInvalid={isErrorForm || isErrorResponse}>
         <FormLabel>{label}</FormLabel>
-        <Input bg={'white'} type={type} {...inputProps} />
+        {children}
         <FormErrorMessage>{errorMessage}</FormErrorMessage>
       </FormControl>
     </>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useArticles, useDeleteArticle } from '@/hooks/articles';
+import { useGetArticles, useDeleteArticle } from '@/hooks/articles';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -29,12 +29,12 @@ import { headTableData } from '@/constants/defaults';
 import { Article } from '@/types/article';
 import Loading from '@/components/Loading';
 import { ChevronDownIcon, EllipsisHorizontalIcon } from '@heroicons/react/24/solid';
-import styles from '@/components/Articles/index.module.css';
 import { useQueryClient } from '@tanstack/react-query';
+import styles from '@/components/Articles/index.module.css';
 
 function Articles() {
   const queryString = '?limit=10&offset=0';
-  const { data: articlesData, isLoading } = useArticles(queryString);
+  const { data: articlesData, isLoading } = useGetArticles(queryString);
   const deleteUser = useDeleteArticle();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef() as React.MutableRefObject<HTMLInputElement & HTMLButtonElement>;
@@ -54,7 +54,6 @@ function Articles() {
         toast({ title: 'Delete Article', description: 'Article successfully deleted' });
       },
       onError: (error: any) => {
-        console.log(error);
         toast({ title: 'Delete Article Error', description: error?.message, status: 'error' });
       }
     });

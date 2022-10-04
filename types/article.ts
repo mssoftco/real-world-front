@@ -22,3 +22,18 @@ export type ArticlesType = {
   articles: Article[];
   articlesCount: number;
 };
+
+export type ArticleForEditor = {
+  article: {
+    title: string;
+    description: string;
+    body: string;
+    tagList?: string[];
+  };
+};
+
+export type ArticleEditorResponseErrors = {
+  title?: [string];
+  description?: [string];
+  body?: [string];
+};

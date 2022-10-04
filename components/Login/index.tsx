@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
-import { Box, Heading, Text, useToast } from '@chakra-ui/react';
+import { Box, Heading, Input, Text, useToast } from '@chakra-ui/react';
 import Button from '@/components/inputs/Button';
 import { useLoginUser } from '@/hooks/users';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { UserForLogin, UserLoginResponsiveErrors } from '@/types/user';
+import { UserForLogin, UserLoginResponseErrors } from '@/types/user';
 import InputForm from '@/components/inputs/InputForm';
 import Link from 'next/link';
 import { routes } from '@/constants/defaults';
-import { useAtom } from 'jotai';
-import { tokenAtom } from '@/atoms/user';
 import Router from 'next/router';
 import { userForLoginDefaultValues as defaultValues } from '@/constants/reactHookFormDefaultData';
+import { useToken } from '@/hooks/useToken';
+import { getRedirectTo } from '@/utils/redirect';
 
 function Login() {
-  const [, setToken] = useAtom(tokenAtom);
+  const { setTokenWithStorage } = useToken();
   const toast = useToast({ status: 'success', duration: 6000, isClosable: true });
 
-  const [errorsResponse, setErrorsResponse] = useState<UserLoginResponsiveErrors>({});
+  const [errorsResponse, setErrorsResponse] = useState<UserLoginResponseErrors>({});
   const { register, handleSubmit, reset , formState: { errors } } = useForm<UserForLogin>({ defaultValues }); // prettier-ignore
 
   const loginUser = useLoginUser();
@@ -25,11 +25,12 @@ function Login() {
       onSuccess: response => {
         reset();
         setErrorsResponse({});
-        setToken(response?.user?.token);
-        Router.push(routes.HOME).then(() => toast({ title: 'User Logged in', description: 'User successfully Logged in' }));
+        setTokenWithStorage(response?.user?.token);
+        const redirectPath = getRedirectTo();
+        Router.push(redirectPath).then(() => toast({ title: 'User Logged in', description: 'User successfully Logged in' }));
       },
       onError: (error: any) => {
-        const errors: UserLoginResponsiveErrors = { ...error };
+        const errors: UserLoginResponseErrors = { ...error };
         let errorDescription = '';
         if (error.hasOwnProperty('email or password')) {
           const errorKey = Object.keys(errors);
@@ -50,23 +51,12 @@ function Login() {
         <Heading color={'gray'} textAlign={'center'}>
           Login
         </Heading>
-        <InputForm
-          name='email'
-          label='Email'
-          type='email'
-          isErrorForm={!!errors.user?.email}
-          errorsResponse={errorsResponse['email']}
-          {...{ register }}
-          pattern={/^\S+@\S+$/i}
-        />
-        <InputForm
-          name='password'
-          label='Password'
-          type='password'
-          isErrorForm={!!errors.user?.password}
-          errorsResponse={errorsResponse['password']}
-          {...{ register }}
-        />
+        <InputForm label='Email' isErrorForm={!!errors.user?.email} errorsResponse={errorsResponse['email']}>
+          <Input type='email' bg={'white'} {...register('user.email', { required: true, pattern: /^\S+@\S+$/i })} />
+        </InputForm>
+        <InputForm label='Password' isErrorForm={!!errors.user?.password} errorsResponse={errorsResponse['password']}>
+          <Input type='password' bg={'white'} {...register('user.password', { required: true })} />
+        </InputForm>
         <Button isLoading={loginUser.isLoading} loadingText='Logging in' w={'100%'} mb={2} type='submit'>
           Login
         </Button>

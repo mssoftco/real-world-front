@@ -1,10 +1,13 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import Articles from '@/services/articles';
-import { UserForLogin } from '@/types/user';
-import User from '@/services/usersAuth';
+import { ArticleForEditor, ArticlesType } from '@/types/article';
 
-export function useArticles(query?: string) {
-  return useQuery(['articles'], () => Articles.get(query));
+export function useCreateArticle() {
+  return useMutation((article: ArticleForEditor) => Articles.create(article));
+}
+
+export function useGetArticles(query?: string) {
+  return useQuery<ArticlesType>(['articles', query], () => Articles.get(query));
 }
 
 export function useDeleteArticle() {

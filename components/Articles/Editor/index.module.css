@@ -1,0 +1,26 @@
+.inputsWrapper {
+  flex-direction: row;
+}
+.mainWrapper {
+  width: 75%;
+  flex-direction: column;
+}
+.tagsWrapper {
+  width: 25%;
+  flex-direction: column;
+}
+.tagList {
+  min-height: 383px;
+}
+@media screen and (max-width: 1000px) {
+  .inputsWrapper {
+    flex-direction: column;
+  }
+  .mainWrapper,
+  .tagsWrapper {
+    width: 100%;
+  }
+  .tagList {
+    min-height: auto;
+  }
+}

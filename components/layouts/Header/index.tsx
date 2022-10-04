@@ -6,14 +6,17 @@ import { useToken } from '@/hooks/useToken';
 import Loading from '@/components/Loading';
 import Button from '@/components/inputs/Button';
 import Router from 'next/router';
+import { useQueryClient } from '@tanstack/react-query';
 
 function Header() {
-  const { isLoading, isLogin, username, setToken } = useToken();
+  const { isLoading, isLogin, username, removeTokenWithStorage } = useToken();
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
   const toast = useToast({ status: 'success', duration: 6000, isClosable: true });
+  const queryClient = useQueryClient();
 
   const logout = () => {
-    setToken('');
+    removeTokenWithStorage();
+    queryClient.removeQueries();
     Router.push(routes.HOME).then(() => toast({ title: 'Logout User', description: 'User successfully Logout', status: 'info' }));
   };
 

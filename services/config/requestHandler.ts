@@ -1,8 +1,7 @@
-import * as dataStorage from '@/utils/dataStorage';
+import { getDataFromStorage, setDataToStorage } from '@/utils/dataStorage';
 
 // success handler
 import { REDIRECT_STORAGE_KEY, routes, TOKEN_STORAGE_KEY } from '@/constants/defaults';
-import { getDataFromStorage } from '@/utils/dataStorage';
 
 export const onSuccess = (response: any) => {
   return response.data;
@@ -16,9 +15,9 @@ export const onError = async (error: any) => {
   switch (error.response?.status) {
     case 401:
     case 403:
-      const token = dataStorage.getDataFromStorage(TOKEN_STORAGE_KEY);
+      const token = getDataFromStorage(TOKEN_STORAGE_KEY, true);
       if (window?.location?.pathname !== routes.LOGIN && !token) {
-        dataStorage.saveDataToStorage(REDIRECT_STORAGE_KEY, window?.location?.pathname, 'session');
+        setDataToStorage(REDIRECT_STORAGE_KEY, window?.location?.pathname, false, 'session');
         window?.location?.replace(routes.LOGIN);
       } else {
         return Promise.reject(error.response?.data?.errors ? error.response?.data?.errors : error.response?.data);
