@@ -7,4 +7,10 @@ export default class Articles {
       method: 'GET'
     });
   }
+  static delete(slug: string) {
+    return request({
+      url: `/articles/${slug}`,
+      method: 'DELETE'
+    });
+  }
 }

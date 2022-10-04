@@ -19,7 +19,7 @@
   overflow-y: auto;
 }
 
-@media only screen and (max-width: 1000px) {
+@media screen and (max-width: 1000px) {
   .dashboardLayout {
     grid-template-rows: 60px 60px 1fr;
     grid-template-columns: 1fr;

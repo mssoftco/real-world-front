@@ -30,9 +30,11 @@ function Header() {
               </Heading>
             </a>
           </Link>
-          <Text as={'span'}>
-            Welcome <b>{username || 'Guest'}</b>
-          </Text>
+          {username && (
+            <Text as={'span'}>
+              Welcome <b>{username}</b>
+            </Text>
+          )}
         </Flex>
         <Flex as={'nav'}>
           <Flex as={'ul'} gap={5}>

@@ -11,3 +11,19 @@ export const routes = {
   ARTICLES: '/articles',
   CREATE_ARTICLE: '/articles/create'
 };
+
+export const sidebarData = [
+  {
+    title: 'Post',
+    navList: [
+      {
+        label: 'All Articles',
+        href: routes.ARTICLES
+      },
+      {
+        label: 'New Article',
+        href: routes.CREATE_ARTICLE
+      }
+    ]
+  }
+];
