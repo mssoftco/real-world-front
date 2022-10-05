@@ -35,29 +35,56 @@ const isQuotaExceeded = (e: any) => {
   return quotaExceeded;
 };
 
-export const saveDataToStorage = (key: string, value: any, storage: storageType = 'local') => {
+export const setDataToStorage = (key: string, value: any, isStringify: boolean = false, storage: storageType = 'local') => {
   if (isStorageAvailable()) {
     try {
+      let inputValue = value;
+      if (isStringify) {
+        inputValue = JSON?.stringify(value);
+      }
       if (storage === 'local') {
-        localStorage.setItem(key, value);
+        localStorage.setItem(key, inputValue);
       } else {
-        sessionStorage.setItem(key, value);
+        sessionStorage.setItem(key, inputValue);
       }
     } catch (e) {
       if (isQuotaExceeded(e)) {
-        // Storage full, maybe notify user or do some clean-up
+        // Storage full
       }
     }
   }
 };
 
-export const getDataFromStorage = (key: string, storage: storageType = 'local') => {
+export const getDataFromStorage = (key: string, isParse: boolean = false, storage: storageType = 'local') => {
   if (isStorageAvailable()) {
-    if (storage === 'local') {
-      return localStorage.getItem(key);
-    } else {
-      return sessionStorage.getItem(key);
+    try {
+      let result;
+      if (storage === 'local') {
+        result = localStorage.getItem(key);
+      } else {
+        result = sessionStorage.getItem(key);
+      }
+      if (isParse) {
+        // @ts-ignore
+        return JSON?.parse(result);
+      }
+      return result;
+    } catch (e) {
+      if (isQuotaExceeded(e)) {
+        // Storage full
+      }
     }
   }
   return null;
+};
+
+export const removeDataFromStorage = (key: string, storage: storageType = 'local') => {
+  if (!isStorageAvailable()) {
+    return null;
+  }
+  if (storage === 'local') {
+    localStorage.removeItem(key);
+  } else {
+    sessionStorage.removeItem(key);
+  }
 };

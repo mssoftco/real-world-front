@@ -1,8 +1,14 @@
-type User = {
-  user: { bio?: string | null; email: string; image?: string | null; token: string; username: string };
+export type User = {
+  user: {
+    username: string;
+    email: string;
+    token: string;
+    bio?: string | null;
+    image?: string | null;
+  };
 };
 
-type UserForRegister = {
+export type UserForRegister = {
   user: {
     username: string;
     email: string;
@@ -10,11 +16,21 @@ type UserForRegister = {
   };
 };
 
-type UserForLogin = {
+export type UserForLogin = {
   user: {
     email: string;
     password: string;
   };
 };
 
-export type { User, UserForLogin, UserForRegister };
+export type UserRegisterResponseErrors = {
+  username?: [string];
+  email?: [string];
+  password?: [string];
+};
+
+export type UserLoginResponseErrors = {
+  'email or password'?: [string];
+  email?: [string];
+  password?: [string];
+};

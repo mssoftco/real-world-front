@@ -7,6 +7,8 @@ import Loading from '@/components/Loading';
 import Router from 'next/router';
 import { routes } from '@/constants/defaults';
 
+/* TODO - add skeleton*/
+
 function RegisterPage() {
   const { isLoading, isLogin } = useToken();
   if (isLoading) return <Loading />;

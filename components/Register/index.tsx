@@ -1,34 +1,23 @@
 import React, { useState } from 'react';
-import { Box, Heading, Text, useToast } from '@chakra-ui/react';
+import { Box, Heading, Input, Text, useToast } from '@chakra-ui/react';
 import Button from '@/components/inputs/Button';
-import { useCreateUser } from '@/hooks/useCreateUser';
+import { useCreateUser } from '@/hooks/users';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { UserForRegister } from '@/types/user';
+import { UserForRegister, UserRegisterResponseErrors } from '@/types/user';
 import InputForm from '@/components/inputs/InputForm';
 import Link from 'next/link';
-import { ToastStatusType } from '@/types/tools';
 import { routes } from '@/constants/defaults';
-import { useAtom } from 'jotai';
-import { tokenAtom } from '@/atoms/user';
 import Router from 'next/router';
-
-const defaultValues: UserForRegister = {
-  user: {
-    username: '',
-    password: '',
-    email: ''
-  }
-};
+import { userForRegisterDefaultValues as defaultValues } from '@/constants/reactHookFormDefaultData';
+import { useToken } from '@/hooks/useToken';
+import { getRedirectTo } from '@/utils/redirect';
 
 function Register() {
-  const [, setToken] = useAtom(tokenAtom);
-  const [errorsResponse, setErrorsResponse] = useState<{ username?: string[]; email?: string[]; password?: string[] }>({});
-  const { register, handleSubmit, reset , formState: { errors } } = useForm<UserForRegister>({ defaultValues }); // prettier-ignore
+  const { setTokenWithStorage } = useToken();
+  const toast = useToast({ status: 'success', duration: 6000, isClosable: true });
 
-  const toast = useToast();
-  const toasty = ([title, description, status]: [string, string, ToastStatusType]) => {
-    toast({ title, description, status, duration: 6000, isClosable: true });
-  };
+  const [errorsResponse, setErrorsResponse] = useState<UserRegisterResponseErrors>({});
+  const { register, handleSubmit, reset , formState: { errors } } = useForm<UserForRegister>({ defaultValues }); // prettier-ignore
 
   const newUser = useCreateUser();
   const onSubmit: SubmitHandler<UserForRegister> = data =>
@@ -36,14 +25,13 @@ function Register() {
       onSuccess: response => {
         reset();
         setErrorsResponse({});
-        setToken(response?.user?.token);
-        Router.push(routes.HOME).then(() => {
-          toasty(['Create User', 'User successfully added', 'success']);
-        });
+        setTokenWithStorage(response?.user?.token);
+        const redirectPath = getRedirectTo();
+        Router.push(redirectPath).then(() => toast({ title: 'Create User', description: 'User successfully added' }));
       },
       onError: (error: any) => {
         setErrorsResponse(error);
-        toasty(['Error Create User', '', 'error']);
+        toast({ title: 'Create User Error', description: '', status: 'error' });
       }
     });
 
@@ -53,31 +41,15 @@ function Register() {
         <Heading color={'gray'} textAlign={'center'}>
           Register
         </Heading>
-        <InputForm
-          name='username'
-          label='User'
-          type='text'
-          isErrorForm={!!errors.user?.username}
-          errorsResponse={errorsResponse['username']}
-          {...{ register }}
-        />
-        <InputForm
-          name='email'
-          label='Email'
-          type='email'
-          isErrorForm={!!errors.user?.email}
-          errorsResponse={errorsResponse['email']}
-          {...{ register }}
-          pattern={/^\S+@\S+$/i}
-        />
-        <InputForm
-          name='password'
-          label='Password'
-          type='password'
-          isErrorForm={!!errors.user?.password}
-          errorsResponse={errorsResponse['password']}
-          {...{ register }}
-        />
+        <InputForm label='User' isErrorForm={!!errors.user?.username} errorsResponse={errorsResponse['username']}>
+          <Input type='text' bg={'white'} {...register('user.username', { required: true })} />
+        </InputForm>
+        <InputForm label='Email' isErrorForm={!!errors.user?.email} errorsResponse={errorsResponse['email']}>
+          <Input type='email' bg={'white'} {...register('user.email', { required: true, pattern: /^\S+@\S+$/i })} />
+        </InputForm>
+        <InputForm label='Password' isErrorForm={!!errors.user?.password} errorsResponse={errorsResponse['password']}>
+          <Input type='password' bg={'white'} {...register('user.password', { required: true })} />
+        </InputForm>
         <Button isLoading={newUser.isLoading} loadingText={'Registering'} w={'100%'} mb={2} type='submit'>
           Register
         </Button>

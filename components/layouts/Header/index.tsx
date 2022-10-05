@@ -1,26 +1,28 @@
 import React from 'react';
 import Link from 'next/link';
 import { routes } from '@/constants/defaults';
-import { Box, Flex, Heading, Text, useToast } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, useMediaQuery, useToast } from '@chakra-ui/react';
 import { useToken } from '@/hooks/useToken';
 import Loading from '@/components/Loading';
 import Button from '@/components/inputs/Button';
 import Router from 'next/router';
-import { ToastStatusType } from '@/types/tools';
+import { useQueryClient } from '@tanstack/react-query';
+
+/* TODO - add skeleton*/
 
 function Header() {
-  const { isLoading, isLogin, username, setToken } = useToken();
-  const toast = useToast();
-  const toasty = ([title, description, status]: [string, string, ToastStatusType]) => {
-    toast({ title, description, status, duration: 6000, isClosable: true });
-  };
+  const { isLoading, isLogin, username, removeTokenWithStorage } = useToken();
+  const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
+  const toast = useToast({ status: 'success', duration: 6000, isClosable: true });
+  const queryClient = useQueryClient();
+
   const logout = () => {
-    setToken('');
-    Router.push(routes.HOME).then(() => {
-      toasty(['Logout User', 'User successfully Logout', 'info']);
-    });
+    removeTokenWithStorage();
+    queryClient.removeQueries();
+    Router.push(routes.HOME).then(() => toast({ title: 'Logout User', description: 'User successfully Logout', status: 'info' }));
   };
-  if (isLoading) return <Loading />;
+
+  if (isLoading) return <Loading thickness={'2px'} size={'lg'} color={'gray'} />;
 
   return (
     <Box as={'header'} bg={'gray.700'} color={'white'} h={'100%'} px={5} fontWeight={500}>
@@ -29,25 +31,29 @@ function Header() {
           <Link href={routes.HOME}>
             <a>
               <Heading as={'h1'} fontSize={24}>
-                Arvan Challenge
+                {isLargerThan800 ? 'Arvan Challenge' : 'A'}
               </Heading>
             </a>
           </Link>
-          <Text as={'span'}>
-            Welcome <b>{username || 'Guest'}</b>
-          </Text>
+          {username && (
+            <Text as={'span'}>
+              Welcome <b>{username}</b>
+            </Text>
+          )}
         </Flex>
         <Flex as={'nav'}>
           <Flex as={'ul'} gap={5}>
             {isLogin ? (
-              <Button onClick={logout}>Logout</Button>
+              <Button as={'a'} cursor={'pointer'} colorScheme={'cyan'} variant={'outline'} onClick={logout}>
+                Logout
+              </Button>
             ) : (
               <>
                 <Link href={routes.LOGIN}>
-                  <a>login</a>
+                  <a>Login</a>
                 </Link>
                 <Link href={routes.REGISTER}>
-                  <a>register</a>
+                  <a>Register</a>
                 </Link>
               </>
             )}
