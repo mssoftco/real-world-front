@@ -8,6 +8,8 @@ import Button from '@/components/inputs/Button';
 import Router from 'next/router';
 import { useQueryClient } from '@tanstack/react-query';
 
+/* TODO - add skeleton*/
+
 function Header() {
   const { isLoading, isLogin, username, removeTokenWithStorage } = useToken();
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
@@ -20,7 +22,7 @@ function Header() {
     Router.push(routes.HOME).then(() => toast({ title: 'Logout User', description: 'User successfully Logout', status: 'info' }));
   };
 
-  if (isLoading) return <Loading thickness={'2px'} size={'md'} />;
+  if (isLoading) return <Loading thickness={'2px'} size={'lg'} color={'gray'} />;
 
   return (
     <Box as={'header'} bg={'gray.700'} color={'white'} h={'100%'} px={5} fontWeight={500}>

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import styles from '@/components/layouts/Sidebar/index.module.css';
 import { useRouter } from 'next/router';
 
+/* TODO - add skeleton*/
+
 function Sidebar() {
   const router = useRouter();
   const { pathname: routerPath } = router;

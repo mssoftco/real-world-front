@@ -25,15 +25,23 @@ import {
   useDisclosure,
   useToast
 } from '@chakra-ui/react';
-import { headTableData } from '@/constants/defaults';
+import { headTableData, routes } from '@/constants/defaults';
 import { Article } from '@/types/article';
 import Loading from '@/components/Loading';
 import { ChevronDownIcon, EllipsisHorizontalIcon } from '@heroicons/react/24/solid';
 import { useQueryClient } from '@tanstack/react-query';
 import styles from '@/components/Articles/index.module.css';
+import Link from 'next/link';
+
+/*
+ TODO - implementation Pagination of ReactQuery
+ TODO - Code Splitting - create and move delete & alert & table component
+ TODO - Dynamic import for delete component
+ TODO - add skeleton
+*/
 
 function Articles() {
-  const queryString = '?limit=10&offset=0';
+  const queryString = '';
   const { data: articlesData, isLoading } = useGetArticles(queryString);
   const deleteUser = useDeleteArticle();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -73,7 +81,11 @@ function Articles() {
         <EllipsisHorizontalIcon style={{ width: '20px' }} />
       </MenuButton>
       <MenuList>
-        <MenuItem>Edit</MenuItem>
+        <MenuItem>
+          <Link href={`${routes.EDIT_ARTICLE}/${encodeURIComponent(article?.slug)}`}>
+            <a style={{ width: '100%' }}>Edit</a>
+          </Link>
+        </MenuItem>
         <MenuItem onClick={() => handleOpenDeleteAlert(article)}>Delete</MenuItem>
       </MenuList>
     </Menu>

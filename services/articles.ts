@@ -2,6 +2,12 @@ import request from '@/services/config/axios.config';
 import { ArticleForEditor } from '@/types/article';
 
 export default class Articles {
+  static getBySlug(slug: string) {
+    return request({
+      url: `/articles/${slug}`,
+      method: 'GET'
+    });
+  }
   static get(queryString?: string) {
     return request({
       url: `/articles${queryString ? queryString : ''}`,
@@ -19,6 +25,13 @@ export default class Articles {
     return request({
       url: `/articles/${slug}`,
       method: 'DELETE'
+    });
+  }
+  static update(article: ArticleForEditor, slug: string) {
+    return request({
+      url: `/articles/${slug}`,
+      method: 'PUT',
+      data: article
     });
   }
 }

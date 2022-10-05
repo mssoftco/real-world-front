@@ -10,7 +10,9 @@ export type Article = {
   favoritesCount: number;
   author: Author;
 };
-
+export type ArticleType = {
+  article: Article;
+};
 export type Author = {
   username: string;
   bio: string | null;
@@ -29,6 +31,7 @@ export type ArticleForEditor = {
     description: string;
     body: string;
     tagList?: string[];
+    slug?: string;
   };
 };
 

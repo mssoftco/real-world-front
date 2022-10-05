@@ -9,7 +9,8 @@ export const routes = {
   LOGIN: '/login',
   REGISTER: '/register',
   ARTICLES: '/articles',
-  CREATE_ARTICLE: '/articles/create'
+  CREATE_ARTICLE: '/articles/create',
+  EDIT_ARTICLE: '/articles/edit'
 };
 
 export const sidebarData = [
