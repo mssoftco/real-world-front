@@ -17,6 +17,7 @@ function Header() {
   const queryClient = useQueryClient();
 
   const logout = () => {
+    console.log('logout:::')
     removeTokenWithStorage();
     queryClient.removeQueries();
     Router.push(routes.HOME).then(() => toast({ title: 'Logout User', description: 'User successfully Logout', status: 'info' }));

@@ -14,15 +14,11 @@ export const onError = async (error: any) => {
   }
   switch (error.response?.status) {
     case 401:
-    case 403:
-      const token = getDataFromStorage(TOKEN_STORAGE_KEY, true);
-      if (window?.location?.pathname !== routes.LOGIN && !token) {
-        setDataToStorage(REDIRECT_STORAGE_KEY, window?.location?.pathname, false, 'session');
-        window?.location?.replace(routes.LOGIN);
-      } else {
-        return Promise.reject(error.response?.data?.errors ? error.response?.data?.errors : error.response?.data);
-      }
+      setDataToStorage(REDIRECT_STORAGE_KEY, window?.location?.pathname, false, 'session');
+      window?.location?.replace(routes.LOGIN);
       break;
+    case 403:
+      return Promise.reject(error.response?.data?.errors ? error.response?.data?.errors : error.response?.data);
     case 502:
       throw new Error(`${error.response?.status} - ${error.response?.data.errors}`);
     default:
