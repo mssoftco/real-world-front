@@ -1,7 +1,6 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ChakraProvider } from '@chakra-ui/react';
-import { Provider as StateProvider } from 'jotai';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { getLayout } from '@/utils/layout';
 import '../styles/globals.css';
@@ -19,15 +18,13 @@ function ArvanApp({ Component, pageProps }: AppProps) {
         <meta name='description' content='frycto' />
         <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no' />
       </Head>
-      <StateProvider>
-        <QueryClientProvider client={queryClient}>
-          <ChakraProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </ChakraProvider>
-        </QueryClientProvider>
-      </StateProvider>
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ChakraProvider>
+      </QueryClientProvider>
     </>
   );
 }
