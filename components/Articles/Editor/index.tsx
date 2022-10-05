@@ -50,7 +50,7 @@ function Editor({ articleData }: { articleData?: ArticleType }) {
       },
       onError: (error: any) => {
         setErrorsResponse(error);
-        toast({ title: 'Create Article Error', description: '', status: 'error' });
+        toast({ title: 'Create Article Error', description: error?.message, status: 'error' });
       }
     });
   const UpdateArticle = useUpdateArticle();
