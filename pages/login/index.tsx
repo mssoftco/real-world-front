@@ -17,7 +17,7 @@ function LoginPage() {
   return (
     <>
       <Head>
-        <title>Arvan Cloud | Login</title>
+        <title>Real World | Login</title>
       </Head>
       {isLogin ? <Loading /> : <Login />}
     </>

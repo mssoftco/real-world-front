@@ -15,7 +15,6 @@ export function useToken() {
   const removeTokenWithStorage = () => {
     setToken(null);
     setDataToStorage(TOKEN_STORAGE_KEY, '');
-    console.log('use:::', token);
   };
 
   useEffect(() => {

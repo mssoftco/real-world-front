@@ -17,7 +17,6 @@ function Header() {
   const queryClient = useQueryClient();
 
   const logout = () => {
-    console.log('logout:::')
     removeTokenWithStorage();
     queryClient.removeQueries();
     Router.push(routes.HOME).then(() => toast({ title: 'Logout User', description: 'User successfully Logout', status: 'info' }));
@@ -32,7 +31,7 @@ function Header() {
           <Link href={routes.HOME}>
             <a>
               <Heading as={'h1'} fontSize={24}>
-                {isLargerThan800 ? 'Arvan Challenge' : 'A'}
+                {isLargerThan800 ? 'Real World' : 'RW'}
               </Heading>
             </a>
           </Link>

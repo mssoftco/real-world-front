@@ -7,7 +7,7 @@ function ArticlesPage() {
   return (
     <>
       <Head>
-        <title>Arvan Cloud | Posts</title>
+        <title>Real World | Posts</title>
       </Head>
       <Articles />
     </>
