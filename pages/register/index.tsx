@@ -17,7 +17,7 @@ function RegisterPage() {
   return (
     <>
       <Head>
-        <title>Arvan Cloud | Register</title>
+        <title>Real World | Register</title>
       </Head>
       {isLogin ? <Loading /> : <Register />}
     </>

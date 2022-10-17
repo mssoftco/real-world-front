@@ -14,7 +14,7 @@ function EditArticlePage() {
   return (
     <>
       <Head>
-        <title>Arvan Cloud | Edit Article</title>
+        <title>Real World | Edit Article</title>
       </Head>
       {isLoading ? <EditSkeleton /> : <EditArticle articleData={data} />}
     </>

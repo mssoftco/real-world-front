@@ -13,11 +13,11 @@ const HomePage = () => {
   return (
     <>
       <Head>
-        <title>Arvan Cloud | Dashboard</title>
+        <title>Real World | Dashboard</title>
       </Head>
       <Box minH={'60vh'} display={'flex'} flexDir={'column'} textAlign={'center'} justifyContent={'center'}>
         <Heading color={'gray.600'} mb={'20px'}>
-          Arvan Cloud Dashboard
+            Real World Dashboard
         </Heading>
         {isLoading ? (
           <div>

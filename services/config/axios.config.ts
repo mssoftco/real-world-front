@@ -8,8 +8,6 @@ instance.defaults.headers.post['Content-Type'] = 'application/json';
 
 const request = async ({ ...options }: AxiosRequestConfig) => {
   const token = getDataFromStorage(TOKEN_STORAGE_KEY, true);
-  console.log('request:::', token);
-  console.log('request:::', !!token);
   if (token) {
     instance.defaults.headers.common['Authorization'] = `Token ${encodeURIComponent(token)}`;
   }else{

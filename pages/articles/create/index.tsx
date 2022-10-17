@@ -7,7 +7,7 @@ function CreateArticlePage() {
   return (
     <>
       <Head>
-        <title>Arvan Cloud | Create Article</title>
+        <title>Real World | Create Article</title>
       </Head>
       <CreateArticle />
     </>

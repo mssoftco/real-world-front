@@ -7,14 +7,14 @@ import '../styles/globals.css';
 
 const queryClient = new QueryClient();
 
-function ArvanApp({ Component, pageProps }: AppProps) {
+function RealApp({ Component, pageProps }: AppProps) {
   const Layout = getLayout<any>(Component);
 
   return (
     <>
       <Head>
         <meta charSet='utf-8' />
-        <title>Arvan Cloud - Dashboard</title>
+        <title>Real World - Dashboard</title>
         <meta name='description' content='frycto' />
         <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no' />
       </Head>
@@ -29,4 +29,4 @@ function ArvanApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default ArvanApp;
+export default RealApp;
