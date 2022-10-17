@@ -1,7 +1,8 @@
-import { getDataFromStorage, setDataToStorage } from '@/utils/dataStorage';
+import { setDataToStorage } from '@/utils/dataStorage';
 
 // success handler
-import { REDIRECT_STORAGE_KEY, routes, TOKEN_STORAGE_KEY } from '@/constants/defaults';
+import { REDIRECT_STORAGE_KEY, routes } from '@/constants/defaults';
+import Router from "next/router";
 
 export const onSuccess = (response: any) => {
   return response.data;
@@ -15,8 +16,8 @@ export const onError = async (error: any) => {
   switch (error.response?.status) {
     case 401:
       setDataToStorage(REDIRECT_STORAGE_KEY, window?.location?.pathname, false, 'session');
-      window?.location?.replace(routes.LOGIN);
-      break;
+      Router.replace(routes.LOGIN).then();
+      return Promise.reject(error.response?.data);
     case 403:
       return Promise.reject(error.response?.data?.errors ? error.response?.data?.errors : error.response?.data);
     case 502:
