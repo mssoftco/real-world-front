@@ -1,4 +1,5 @@
-# ![React ReactQuery Example App](project-logo.png)
+# React ReactQuery Example App
+
 [![RealWorld Frontend](https://img.shields.io/badge/realworld-frontend-%23783578.svg)](http://realworld.io)
 #### React + Next.js + ReactQuery + Chakra UI + React Hook Form
 
