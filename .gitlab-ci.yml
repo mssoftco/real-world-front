@@ -3,9 +3,9 @@ image: node
 pages:
   stage: build
   script:
-    - yarn
-    - yarn build
-    - yarn export
+    - npm i
+    - npm run build
+    - npm run export
     - rm -rf public/*
     - mv out/* public
   artifacts:
@@ -17,3 +17,4 @@ pages:
       - build/cache/
   only:
     - main
+    - develop
