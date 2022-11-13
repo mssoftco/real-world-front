@@ -6,7 +6,7 @@
 
 ## Getting started
 
-### [Live Demo](https://mssoftco.gitlab.io/real-world-front/)
+### [Live Demo](https://real-world-front.vercel.app/)
 
 or
 
